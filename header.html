@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title>Spotify - Web Player: Music for everyone</title>
+  <link rel="shortcut icon" type="spotify-icon" href="spotifyimages/spotify.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="sidebar.css">
+  <link rel="stylesheet" href="songs.css">
+  <link rel="stylesheet" href="footer.css">
+  <link rel="stylesheet" href="playbutton.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: black;
+      margin: 6px 20px 20px 20px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      height: 50px;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      padding: 0 10px;
+    }
+
+    .input-container {
+      position: relative;
+      flex: 1;
+    }
+
+    .browse-img {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 25px;
+      opacity: 0.5;
+      cursor: pointer;
+    }
+
+    .browse-img:hover {
+      opacity: 1;
+      transition: 0.30s;
+    }
+
+    .input-container::after {
+      content: "";
+      position: absolute;
+      right: 37px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 30px;
+      background-color: rgba(165, 165, 165, 0.5);
+    }
+
+    .input-class[type=text] {
+      background-image: url(spotifyimages/icons8-search-48.png);
+      background-size: 30px;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      background-color: #1F1F1F;
+      background-position: 7px 9px;
+      background-repeat: no-repeat;
+      padding: 15.3px 236px 15.3px 44px;
+      color: white;
+      width: 100%;
+      margin: 0 10px;
+    }
+
+    .input-class[type=text] {
+      flex: 1;
+      margin: 0 10px;
+    }
+
+    .input-class[type=text]:hover {
+      background-color: #343434;
+      transition: 0.50s;
+      border: 1px solid #343434;
+    }
+
+    .white-spotify-logo {
+      width: 33px;
+      cursor: pointer;
+    }
+
+    .middle-section {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      justify-content: center;
+      margin-left: 130px;
+    }
+
+    .home-button {
+      background-color: #1F1F1F;
+      padding: 9px 10px 9px 11px;
+      margin-right: 8px;
+      border-radius: 32px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .home-button:hover {
+      padding: 10px 12px 10px 12px;
+      transition: 0.30s;
+    }
+
+    .spotify-home {
+      width: 26px;
+    }
+
+    .last-section {
+      display: flex;
+      align-items: center;
+    }
+
+    .signup-button {
+      font-family: Roboto, Arial;
+      font-weight: bold;
+      color: gray;
+      background-color: black;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .signup-button:hover {
+      color: white;
+      font-size: 17px;
+      transition: 0.30s;
+    }
+
+    .login-button {
+      border: none;
+      font-family: Roboto;
+      font-weight: bold;
+      padding: 15px 34px 15px 34px;
+      border-radius: 40px;
+      margin-left: 20px;
+      cursor: pointer;
+    }
+
+    .login-button:hover {
+      background-color: rgb(224, 221, 221);
+      padding: 16px 35px 15px 35px;
+      font-size: 15px;
+    }
+
+    .signup-button,
+    .login-button {
+      margin-left: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .middle-section {
+        margin-left: 0;
+        width: auto;
+      }
+
+      .input-class[type=text] {
+        width: 100%;
+        margin: 10px 0;
+      }
+
+      .last-section {
+        margin-left: 10px;
+        justify-content: flex-end;
+      }
+
+      .signup-button,
+      .login-button {
+        margin-left: 5px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .middle-section {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .last-section {
+        width: 100%;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="header">
+    <div class="start-section">
+      <img class="white-spotify-logo" title="Spotify" src="spotifyimages/social.png">
+    </div>
+
+    <div class="middle-section">
+      <div class="spotify-home-container">
+        <button class="home-button" title="Home"><img class="spotify-home"
+            src="spotifyimages/icons8-home-100.png"></button>
+      </div>
+
+      <div class="search-text-container">
+        <div class="input-container">
+          <input class="input-class" type="text" name="search" placeholder="What do you want to play?">
+          <img class="browse-img" src="spotifyimages/browse_activity_20dp_E8EAED_FILL0_wght400_GRAD0_opsz20.png"
+            alt="Browse" title="Browse">
+        </div>
+        <div class="vertical-line-container"></div>
+
+      </div>
+    </div>
+
+    <div class="last-section">
+      <button class="signup-button">Sign up</button>
+      <button class="login-button">Log in</button>
+    </div>
+  </div>
+
+  <div class="sidebar-container">
+    <div class="first-section">
+      <div class="img-library">
+        <img class="collapse-img" src="spotifyimages/icons8-back-arrow-100.png">
+      </div>
+
+      <div class="library-text">
+        <p class="text-lib">Your Library</p>
+      </div>
+
+      <div class="plus-symbol">
+        <p class="plus">&plus;</p>
+      </div>
+    </div>
+
+    <div class="second-container">
+      <h4 class="h4-paragraph">Create your first playlist</h4>
+      <p class="paragraph">It's easy, we'll help you</p>
+      <button class="playlist-button">Create playlist</button>
+    </div>
+
+    <div class="third-container">
+      <h4 class="h4-paragraph">Let's find some podcasts to follow</h4>
+      <p class="paragraph">we'll keep you updated on new episodes</p>
+      <button class=" playlist-button">Browse podcasts</button>
+    </div>
+
+    <div class="formalities">
+      <div class="legal-01">
+        <p class="legal">Legal</p>
+      </div>
+
+      <div class="legal-02">
+        <p class="legal">Safety &#38; PrivacyCenter</p>
+      </div>
+
+      <div class="legal-03">
+        <p class="legal">Privacy Policy</p>
+      </div>
+
+      <div class="legal-04">
+        <p class="legal">Cookies</p>
+      </div>
+    </div>
+
+    <div class="formalities">
+      <div class="legal-01">
+        <p class="legal">About Ads</p>
+      </div>
+
+      <div class="legal-02">
+        <p class="legal">Accessibility</p>
+      </div>
+    </div>
+
+    <div class="special-cookies">
+      <div class="legal-02">
+        <p class="Cookies">Cookies</p>
+      </div>
+    </div>
+
+    <div class="eng-container">
+      <button class="english">English</button>
+      <img class="eng-img" src="spotifyimages/icons8-international-100.png">
+    </div>
+  </div>
+
+  <div class="main-container" style="color:white;">
+    <div class="heading">
+      <h2 class="popular-artists">Popular artists</h2>
+      <p class="showall">show all</p>
+    </div>
+
+    <div class="song-card-container">
+      <div class="songs-card">
+        <img class="pritam-img" src="https://i.scdn.co/image/ab6761610000e5ebcb6926f44f620555ba444fca">
+        <span class="pritam-name">Pritam</span>
+        <p class="artist">Artist</p>
+
+        <div class="btn-div">
+          <button class="play-button" data-audio="songs/Kumkumala.mp3"><img class="play-button-img"
+              src="spotifyimages/icons8-play-button-50.png">
+            <div class="tooltip">Play Pritam</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="songs-card">
+        <img class="pritam-img" src="https://i.scdn.co/image/ab6761610000e5ebbd6fbc7d0973cc33940781ad">
+        <span class="pritam-name">Sachin-Jigar</span>
+        <p class="artist">Artist</p>
+
+        <div class="btn-div">
+          <button class="play-button" data-audio="songs\Tere Vaaste Zara Hatke Zara Bachke 128 Kbps.mp3"><img
+              class="play-button-img" src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="songs-card">
+        <img class="pritam-img"
+          src="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da842c84a4a1a61d01c745a1221b ">
+        <span class="pritam-name">Arijit Singh</span>
+        <p class="artist">Artist</p>
+
+        <div class="btn-div">
+          <button class="play-button" data-audio="songs\Satranga - Animal 128 Kbps.mp3"><img class="play-button-img"
+              src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="songs-card">
+        <img class="pritam-img" src="https://i.scdn.co/image/ab6761610000e5ebb19af0ea736c6228d6eb539c">
+        <span class="pritam-name">A.R.Rahaman</span>
+        <p class="artist">Artist</p>
+
+        <div class="btn-div">
+          <button class="play-button" data-audio="songs\Marvel Anthem  Telugu  A.R.Rahman.mp3"><img
+              class="play-button-img" src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="songs-card">
+        <img class="pritam-img" src="https://i.scdn.co/image/ab6761610000e5ebc3eae1d64408df9eb83d583f">
+        <span class="pritam-name">Karthik</span>
+        <p class="artist">Artist</p>
+
+        <div class="btn-div">
+          <button class="play-button" data-audio="songs\Gusa Gusa Lade(SenSongsMp3.Com).mp3"><img
+              class="play-button-img" src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="songs-card">
+        <img class="pritam-img" src="https://thisis-images.spotifycdn.com/37i9dQZF1DZ06evO2GbnbB-default.jpg">
+        <span class="pritam-name">Anirudh Ravichander</span>
+        <p class="artist">Artist</p>
+
+        <div class="btn-div">
+          <button class="play-button" data-audio="songs\The Karma Theme - SenSongsMp3.Co.mp3"><img
+              class="play-button-img" src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="second-heading">
+      <h2 class="popular-artists">Popular albums and singles</h2>
+      <p class="showall">show all</p>
+    </div>
+
+    <div class="second-song-card-container">
+      <div class="second-songs-card">
+        <img class="glory-img" src="https://i.scdn.co/image/ab67616d00001e029daa4e57258767164ab09cac">
+        <p class="glory-name">Anuvanuvu</p>
+        <p class="song-title">Sunny M.R.,Arijit Singh, Krishna Kanth</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs\Anuvanuvu.mp3"><img class="play-button-img"
+              src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="second-songs-card">
+        <img class="glory-img" src="https://i.scdn.co/image/ab67616d0000b2735fb9ec91608a996202583525">
+        <p class="glory-name">Theme of Kalki</p>
+        <p class="song-title">Chandra Bose &middot; Kala Bhairava &middot; Gowtham Bharadwaj</p>
+
+        <div class="btn-div-01">
+          <button class="play-button"
+            data-audio="songs\Kalki 2898 AD - Title Song  Prabhas  Amitab Bachchan  Kamal Haasan  Nag Ashwin  Fanmade.mp3"><img
+              class="play-button-img" src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="second-songs-card">
+        <img class="glory-img" src="https://i.scdn.co/image/ab67616d0000b273a33a61122a1cfb4291060f0a">
+        <p class="glory-name">Inthalo Ennenni Vinthalo</p>
+        <p class="song-title">Krishna Chaitanya</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs\03 - Inthalo Ennenni Vinthalo Male.mp3"><img
+              class="play-button-img" src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="second-songs-card">
+        <img class="glory-img" src="https://i.scdn.co/image/ab67616d0000b273d3b0a745a038245a93f66ac7">
+        <p class="glory-name">Emannavoo</p>
+        <p class="song-title">Anirudh Ravichandar, Swetha Mohan</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs\Emannavoo-Shweta-Mohan.mp3"><img class="play-button-img"
+              src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="second-songs-card">
+        <img class="glory-img" src="https://i.scdn.co/image/ab67616d0000b273ace943da67db014bbcbbf1c1">
+        <p class="glory-name">Ayudha Pooja[TELUGU]</p>
+        <p class="song-title">Kala Bhairava, Anirudh Ravichandar, Ramajogayya Sastry</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs\[iSongs.info] 06 - Ayudha Pooja.mp3"><img
+              class="play-button-img" src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="second-songs-card">
+        <img class="glory-img" src="https://i.scdn.co/image/ab67616d0000b273cd2f0a0b44f892319c3fbd22">
+        <p class="glory-name">Ninnila</p>
+        <p class="song-title">Thaman S, Armaan Malik, Shree Mani</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs\[iSongs.info] 01 - Ninnila.mp3"><img class="play-button-img"
+              src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="second-heading">
+      <h2 class="popular-artists">Popular radio</h2>
+      <p class="showall">show all</p>
+    </div>
+
+    <div class="second-song-card-container">
+      <div class="second-songs-card">
+        <img class="glory-img"
+          src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/radio/artist/4YRxDV8wJFPHPTeXepOstw/en">
+        <p class="song-title">With Sachin-Jigar, Atif Aslam, Amit Trivedi...</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs/O Maahi - Dunki 128 Kbps.mp3"><img class="play-button-img"
+              src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="second-songs-card">
+        <img class="glory-img"
+          src="data:image/jpeg;base64,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">
+        <p class="glory-name">Anirudh Ravichander Radio</p>
+        <p class="song-title">By Spotify</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs/Hukum.mp3"><img class="play-button-img"
+              src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="second-songs-card">
+        <img class="glory-img"
+          src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/radio/artist/70B80Lwx2sxti0M1Ng9e8K/en">
+        <p class="song-title">With Anuradha Paudwal, Uttam Sing...</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs/Main Khiladi - Selfiee 128 Kbps.mp3"><img
+              class="play-button-img" src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="second-songs-card">
+        <img class="glory-img"
+          src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/radio/artist/4fEkbug6kZzzJ8eYX6Kbbp/en">
+        <p class="song-title">With Pritam, Mohit Chauhan, Armaaan..</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs/Zara Sa - Jannat 128 Kbps.mp3"><img class="play-button-img"
+              src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="second-songs-card">
+        <img class="glory-img"
+          src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/radio/artist/5sSzCxHtgL82pYDvx2QyEU/de">
+        <p class="glory-name">Devi Sri Prasad Radio</p>
+        <p class="song-title">By Spotify</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs/Boss Party.mp3"><img class="play-button-img"
+              src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="second-songs-card">
+        <img class="glory-img"
+          src="https://pickasso.spotifycdn.com/image/ab67c0de0000deef/dt/v1/img/radio/artist/0oOet2f43PA68X5RxKobEy/de">
+        <p class="song-title">With A.R.Rahman, Atif Aslam, Rahat Fateh A...</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs/Sooseki.mp3"><img class="play-button-img"
+              src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="second-heading">
+      <h2 class="popular-artists">Popular radio</h2>
+      <p class="showall">show all</p>
+    </div>
+
+    <div class="second-song-card-container">
+      <div class="second-songs-card">
+        <img class="glory-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGLlBu6U1jfDUnXRCLefd3NBreENIgyowtcw&s">
+        <p class="song-title">Your daily update of the most played...</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs/Billie-Eilish-BIRDS-OF-A-FEATHER-(HipHopKit.com).mp3"><img
+              class="play-button-img" src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="second-songs-card">
+        <img class="glory-img"
+          src="https://charts-images.scdn.co/assets/locale_en/regional/weekly/region_us_default.jpg">
+        <p class="song-title">Your daily update of the most played...</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs/yung_kai_-_blue_@Pedoca.com.mp3"><img class="play-button-img"
+              src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="second-songs-card">
+        <img class="glory-img"
+          src="https://charts-images.scdn.co/assets/locale_en/regional/daily/region_global_default.jpg">
+        <p class="song-title">Your daily update of the most played...</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs/Stay(PagalNew.Com.Se).mp3"><img class="play-button-img"
+              src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="second-songs-card">
+        <img class="glory-img"
+          src="https://charts-images.scdn.co/assets/locale_en/regional/daily/region_us_default.jpg">
+        <p class="song-title">Your daily update of the most played...</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs/Glass Animals - Heat Waves (Official Video).mp3"><img
+              class="play-button-img" src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="second-songs-card">
+        <img class="glory-img"
+          src="https://charts-images.scdn.co/assets/locale_en/viral/daily/region_global_default.jpg">
+        <p class="song-title">Your daily update of the most viral tracks...</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs/Maroon 5 - Animals (Lyrics).mp3"><img class="play-button-img"
+              src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+
+      <div class="second-songs-card">
+        <img class="glory-img" src="https://charts-images.scdn.co/assets/locale_en/viral/daily/region_us_default.jpg">
+        <p class="song-title">Your daily update of the most viral tracks...</p>
+
+        <div class="btn-div-01">
+          <button class="play-button" data-audio="songs/Ed Sheeran - Perfect (Lyrics).mp3"><img class="play-button-img"
+              src="spotifyimages/icons8-play-button-50.png"></button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="second-heading">
+        <h2 class="popular-artists">Popular playlists from editors</h2>
+        <p class="showall">show all</p>
+      </div>
+
+      <div class="third-song-card-container">
+        <div class="second-songs-card">
+          <img class="glory-img" src="https://i.scdn.co/image/ab67616d0000b273495ce6da9aeb159e94eaa453">
+          <p class="song-title">Your daily update of the most played...</p>
+
+          <div class="btn-div-01">
+            <button class="play-button" data-audio="songs/The Chainsmokers - Closer (Lyrics) ft. Halsey.mp3"><img
+                class="play-button-img" src="spotifyimages/icons8-play-button-50.png"></button>
+          </div>
+        </div>
+
+        <div class="second-songs-card">
+          <img class="glory-img" src="https://i.scdn.co/image/ab67616d00001e02b7007917533468cb85602f52">
+          <p class="song-title">Your daily update of the most played...</p>
+
+          <div class="btn-div-01">
+            <button class="play-button" data-audio="songs/Ellie Goulding - Love Me Like You Do (Lyrics).mp3"><img
+                class="play-button-img" src="spotifyimages/icons8-play-button-50.png"></button>
+          </div>
+        </div>
+
+        <div class="second-songs-card">
+          <img class="glory-img" src="https://i.scdn.co/image/ab67616d0000b273d304ba2d71de306812eebaf4">
+          <p class="song-title">Your daily update of the most played...</p>
+
+          <div class="btn-div-01">
+            <button class="play-button" data-audio="songs/One Direction - Night Changes (Lyrics).mp3"><img
+                class="play-button-img" src="spotifyimages/icons8-play-button-50.png"></button>
+          </div>
+        </div>
+
+        <div class="second-songs-card">
+          <img class="glory-img" src="https://i.scdn.co/image/ab67616d00001e02b8ee516450c1dcec1378d9a6">
+          <p class="song-title">Your daily update of the most played...</p>
+
+          <div class="btn-div-01">
+            <button class="play-button" data-audio="songs/Rosa Linn - SNAP (Lyrics).mp3"><img class="play-button-img"
+                src="spotifyimages/icons8-play-button-50.png"></button>
+          </div>
+        </div>
+
+        <div class="second-songs-card">
+          <img class="glory-img" src="https://i.scdn.co/image/ab67616d0000b2734718e2b124f79258be7bc452">
+          <p class="song-title">Your daily update of the most viral tracks...</p>
+
+          <div class="btn-div-01">
+            <button class="play-button" data-audio="songs/The-Weeknd-Starboy-Ft-Daft-Punk-(HipHopKit.com).mp3"><img
+                class="play-button-img" src="spotifyimages/icons8-play-button-50.png"></button>
+          </div>
+        </div>
+
+        <div class="second-songs-card">
+          <img class="glory-img" src="https://i.scdn.co/image/ab67616d0000b2738792c3e96f8ab97a767c5d0c">
+          <p class="song-title">Your daily update of the most viral tracks...</p>
+
+          <div class="btn-div-01">
+            <button class="play-button"
+              data-audio="songs/Until I Found You -Stephen Sanchez ft. Em Beihold (Lyric Video).mp3"><img
+                class="play-button-img" src="spotifyimages/icons8-play-button-50.png"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="total-container">
+        <div class="company-container">
+          <h4 class="company">Company</h4>
+          <p class="about">About</p>
+          <p class="jobs">Jobs</p>
+          <p class="record">For the Record</p>
+        </div>
+
+        <div class="company-container">
+          <h4 class="company">Communities</h4>
+          <p class="about">For Artists</p>
+          <p class="jobs">Developers</p>
+          <p class="record">Advertising</p>
+          <p class="record">Investors</p>
+          <p class="record">Vendors</p>
+        </div>
+
+        <div class="company-container">
+          <h4 class="company">Useful links</h4>
+          <p class="about">Support</p>
+          <p class="jobs">Free Mobile App</p>
+        </div>
+
+        <div class="spotifyplans-container">
+          <h4 class="company">Spotify Plans</h4>
+          <p class="about">Premium Individual</p>
+          <p class="jobs">Premium Duo</p>
+          <p class="record">Premium Family</p>
+          <p class="record">Premium Student</p>
+          <p class="record">Spotify Free</p>
+        </div>
+
+        <div class="instagram">
+          <img class="insta-logo" src="spotifyimages/icons8-instagram-100.png">
+        </div>
+
+        <div class="instagram">
+          <img class="twitter-logo" src="spotifyimages/icons8-twitter-100.png">
+        </div>
+
+        <div class="instagram">
+          <img class="facebook-logo" src="spotifyimages/icons8-facebook-100.png">
+        </div>
+      </div>
+
+      <p style="color: rgb(40, 40, 40); margin-bottom: 24px; margin-left: 35px">
+        _______________________________________________________________________________________________________________________________
+      </p>
+
+      <div style="display: flex; margin-left: 35px; margin-bottom: 80px; padding-top: 16px;">
+        <div>
+          <p style="font-family: Montserrat; color:#B3B3B3"> &#xA9;</p>
+        </div>
+        <div>
+          <p style="margin-left: 5px; font-family: Montserrat; font-size: 14px; color: #B3B3B3;">2024 Spotify AB</p>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="footer-container">
+      <div class="footer">
+        <p class="preview">Preview of Spotify</p>
+        <p class="info">Sign up to get unlimited songs and podcasts with occasional ads. No credit card needed.</p>
+      </div>
+
+      <button class="button-signup">Sign up free</button>
+
+    </div>
+  </div>
+
+  <script>
+    const playButtons = document.querySelectorAll('.play-button');
+    const stopButton = document.getElementById('stop-button');
+    const seekBar = document.getElementById('seek-bar');
+
+    const audioPlayer = new Audio();
+    let currentAudioSource = null;
+
+    playButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        const audioSource = this.getAttribute('data-audio');
+
+        if (currentAudioSource !== audioSource) {
+          audioPlayer.src = audioSource;
+          audioPlayer.play();
+          currentAudioSource = audioSource;
+        } else {
+          if (audioPlayer.paused) {
+            audioPlayer.play();
+          } else {
+            audioPlayer.pause();
+          }
+        }
+      });
+    });
+
+    stopButton.addEventListener('click', function () {
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+      currentAudioSource = null;
+    });
+
+    audioPlayer.addEventListener('timeupdate', function () {
+      const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+      seekBar.value = progress || 0;
+    });
+
+    seekBar.addEventListener('input', function () {
+      const seekTime = (this.value / 100) * audioPlayer.duration;
+      audioPlayer.currentTime = seekTime;
+    });
+
+    audioPlayer.addEventListener('ended', function () {
+      seekBar.value = 0;
+      currentAudioSource = null;
+    });
+  </script>
+</body>
+
+</html>
